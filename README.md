@@ -16,13 +16,12 @@
 
 ## Sample Usage
 
-
 ### 1. General Error Classes
 
 	var main = require('./../lib/main');
 	var ValidationError = main.general.ValidationError;
 
-	var msg = "awfully bad request is the message",
+	var msg = "terrible input",
 		ValError = new BadRequest(msg);
 
 	console.log('ValError', ValError);
@@ -52,6 +51,50 @@ STDOUT output:
 		resCode: 400,
 		message: 'just an awful request'
 	}
+
+
+## In-App Usage eg in Express
+
+	// route definitions
+	var customErrors = require('customErrors');
+	var BadRequestError = customErrors.request.BadRequest;
+
+	app.get('/some/route', function(req, res, next) {
+		if ('error thrown') {
+			next(new BadRequestError('reason for the bad request being thrown'));
+		}
+	});
+
+	// catchall error middleware (put at very end underneath all routes)
+	var	util = require('util');
+	var Log = require('log');
+	var	log = new Log();
+	var customErrors = require('customErrors');
+	var BadRequestError = customErrors.request.BadRequest;
+
+	app.use(function(err, req, res, next) {
+
+		if (err instanceof BadRequestError && app.get('env') === 'production') {
+			// use visionmedia's logger to write to main app logfile
+			var logLevel = err.logLevel || 'debug';
+			var logger = log[logLevel];
+			var seriousErrors = ['error', 'critical', 'alert', 'emergency'];
+
+			// log the error summary with visionmedia's logger
+			logger(err.name + ': ' + err.message);
+
+			// if it's a serious error then dump some more info for debugging purposes
+			if (seriousErrors.indexOf(logLevel) !== -1) {
+				console.log(err.stack);
+			}
+
+		} else {
+			// if in dev then deeply inspect every error
+			console.log(err.name || 'express error', util.inspect(err, true, 4, true));
+		}
+
+		res.send(err.resCode || 500, {error: err.name || "there was an error"});
+	});
 
 
 

@@ -1,6 +1,6 @@
 {
-  "name": "errors",
-  "version": "0.0.0",
+  "name": "customErrors",
+  "version": "0.1.0",
   "description": "custom error classes",
   "main": "index.js",
   "scripts": {
