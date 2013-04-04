@@ -1,0 +1,18 @@
+{
+  "name": "errors",
+  "version": "0.0.0",
+  "description": "custom error classes",
+  "main": "index.js",
+  "scripts": {
+    "test": "tap ./test"
+  },
+  "repository": "",
+  "keywords": [
+    "errors"
+  ],
+  "author": "andrew griffiths",
+  "license": "BSD",
+  "devDependencies": {
+    "tap": "~0.4.1"
+  }
+}
