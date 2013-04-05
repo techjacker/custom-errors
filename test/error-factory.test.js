@@ -23,3 +23,16 @@ test('error factory', function(t) {
 
 	t.end();
 });
+
+
+test('error factory: override response code', function(t) {
+
+	var BaseError = errorFactory('Random', 'info', 400),
+		msg = 'random message',
+		BaseErrorInstance = new BaseError(msg),
+		BaseErrorInstanceOverride = new BaseError(msg, 500);
+
+	t.equal(BaseErrorInstance.resCode, 400, 'this.resCode shd have been overriden by instance of class');
+	t.equal(BaseErrorInstanceOverride.resCode, 500, 'this.resCode shd have been overriden by instance of class');
+	t.end();
+});
