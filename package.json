@@ -1,5 +1,5 @@
 {
-  "name": "customErrors",
+  "name": "custom-errors",
   "version": "0.2.0",
   "description": "custom error classes",
   "main": "index.js",
