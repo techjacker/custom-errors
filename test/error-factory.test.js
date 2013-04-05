@@ -6,7 +6,7 @@ var test = require('tap').test,
 test('error factory', function(t) {
 
 	var RandomError = errorFactory('Random', 'info');
-	var RandomErrorStatusCode = errorFactory('Random', 'info', 400);
+	var RandomErrorStatusCode = errorFactory('Random', 'info', 403);
 
 	var msg = 'random message',
 		RandomInstance = new RandomError(msg),
@@ -16,10 +16,10 @@ test('error factory', function(t) {
 	t.equal(RandomInstance.message, msg, 'this.message param is correct');
 	t.equal(RandomInstance.name, 'Random', 'this.name param is correct');
 	t.equal(RandomInstance.logLevel, 'info', 'this.logLevel param is correct');
-	t.notOk(RandomInstance.resCode, 'this.resCode param is undefined');
+	t.equal(RandomInstance.resCode, 400, 'this.resCode param defaults to 400');
 
 	// WITH status code this time
-	t.ok(RandomStatusInstance.resCode, 'this.resCode param IS defined');
+	t.equal(RandomStatusInstance.resCode, 403, 'this.resCode param is assigned according to fn input args');
 
 	t.end();
 });
