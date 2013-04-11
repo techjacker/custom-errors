@@ -5,6 +5,7 @@
 - All classes inherit from the abstract class (lib/abstract-error.js) inspired by [dustin senos's post](http://dustinsenos.com/articles/customErrorsInNode).
 - The abstract error class inherits from the in built error object.
 - All error classes exported in lib/main.js -> index.js
+- Easy logging integration with express.js using the [log errors module](https://github.com/techjacker/log-errors)
 
 ### App Error Classes (module.exports.general)
 	1. ValidationError
@@ -58,47 +59,35 @@ ReqError {
 }
 ```
 
-## In-App Usage eg in Express
-```JavaScript
-// route definitions
-var customErrors = require('customErrors');
-var BadRequestError = customErrors.request.BadRequest;
+## Using with Express.js
 
+Easy integration with the [log errors module](https://github.com/techjacker/log-errors)
+
+```JavaScript
+var BadRequestError = require('customErrors').request.BadRequest;
+var logErrors   = require('log-errors');
+
+// define some routes
 app.get('/some/route', function(req, res, next) {
 	if ('error thrown') {
 		next(new BadRequestError('reason for the bad request being thrown'));
 	}
 });
 
-// catchall error middleware (put at very end underneath all routes)
-var	util = require('util');
-var Log = require('log');
-var	log = new Log();
-var customErrors = require('customErrors');
-var BadRequestError = customErrors.request.BadRequest;
+//... catchall error middleware (put at very end beneath all routes)
+app.configure('development', function() {
 
-app.use(function(err, req, res, next) {
+	// wrap the logger if you need to do something
+	// with the error before passing it to the logger
+    app.use(function(err, req, res, next) {
+		err.resCode || (err.resCode = 400);
+        logErrors.development(err, req, res, next);
+    });
+});
 
-	if (err instanceof BadRequestError && app.get('env') === 'production') {
-		// use visionmedia's logger to write to main app logfile
-		var logLevel = err.logLevel || 'debug';
-		var logger = log[logLevel];
-		var seriousErrors = ['error', 'critical', 'alert', 'emergency'];
-
-		// log the error summary with visionmedia's logger
-		logger(err.name + ': ' + err.message);
-
-		// if it's a serious error then dump some more info for debugging purposes
-		if (seriousErrors.indexOf(logLevel) !== -1) {
-			console.log(err.stack);
-		}
-
-	} else {
-		// if in dev then deeply inspect every error
-		console.log(err.name || 'express error', util.inspect(err, true, 4, true));
-	}
-
-	res.send(err.resCode || 500, {error: err.name || "there was an error"});
+app.configure('production', function() {
+	// defaults to sending 500 response if err.resCode is not set
+    app.use(logErrors.production);
 });
 ```
 
@@ -115,17 +104,3 @@ app.use(function(err, req, res, next) {
 	5 NOTICE a normal but significant condition
 	6 INFO a purely informational message
 	7 DEBUG messages to debug an application
-
-
-## TODO
-1. add more tests
-2. add visionmedia's log as dependency -> walk thru list of methods and throw error logLevel property is not a method
-
-eg this shd throw:
-```JavaScript
-errFactory('Database', 'err');
-```
-eg this is correct:
-```JavaScript
-errFactory('Database', 'error');
-```
