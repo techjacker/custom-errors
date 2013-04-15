@@ -34,7 +34,7 @@ STDOUT output:
 ```Shell
 ValError {
 	name: 'Validation',
-	logLevel: 'warn',
+	logLevel: 'warning',
 	resCode: undefined,
 	message: 'not a valid date'
 }
@@ -53,7 +53,7 @@ STDOUT output:
 ```Shell
 ReqError {
 	name: 'BadRequest',
-	logLevel: 'warn',
+	logLevel: 'warning',
 	resCode: 400,
 	message: 'just an awful request'
 }

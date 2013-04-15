@@ -16,7 +16,7 @@ test('ValidationError', function(t) {
 	t.ok(ValError instanceof ValidationError);
 	t.equal(ValError.message, msg, 'this.message param is correct');
 	t.equal(ValError.name, 'Validation', 'this.name param is correct');
-	t.equal(ValError.logLevel, 'warn', 'this.logLevel param is correct');
+	t.equal(ValError.logLevel, 'warning', 'this.logLevel param is correct');
 
 	t.end();
 });
