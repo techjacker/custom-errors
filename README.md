@@ -35,6 +35,7 @@ STDOUT output:
 ValError {
 	name: 'Validation',
 	logLevel: 'warning',
+	doNotKill: undefined,
 	resCode: undefined,
 	message: 'not a valid date'
 }

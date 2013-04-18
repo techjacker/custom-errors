@@ -1,6 +1,6 @@
 {
   "name": "custom-errors",
-  "version": "1.2.2",
+  "version": "1.3.0",
   "description": "custom error classes optimised for error logging",
   "main": "index.js",
   "scripts": {
@@ -13,7 +13,8 @@
   "author": "andrew griffiths",
   "license": "BSD",
   "devDependencies": {
-    "tap": "~0.4.1"
+    "tap": "~0.4.1",
+    "underscore": "~1.4.4"
   },
   "dependencies": {}
 }

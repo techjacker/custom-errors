@@ -1,11 +1,25 @@
-var test = require('tap').test,
+var _    = require('underscore'),
+	test = require('tap').test,
 	AbstractError = require('./../lib/abstract-error'),
 	main = require('./../lib/main');
 
 // individual error classes
 var ValidationError = main.general.ValidationError;
-var BadRequestError = main.request.BadRequest;
 
+test('main.js exports', function(t) {
+
+	// general errors
+	t.ok(_.isFunction(main.general.ValidationError), 'main.general.ValidationError exports a function');
+	t.ok(_.isFunction(main.general.WorkerError), 'main.general.WorkerError exports a function');
+	t.ok(_.isFunction(main.general.DatabaseError), 'main.general.DatabaseError exports a function');
+
+	// request errors
+	t.ok(_.isFunction(main.request.BadRequest), 'main.request.BadRequest exports a function');
+	t.ok(_.isFunction(main.request.Unauthorized), 'main.request.Unauthorized exports a function');
+	t.ok(_.isFunction(main.request.Forbidden), 'main.request.Forbidden exports a function');
+	t.ok(_.isFunction(main.request.NotAcceptable), 'main.request.NotAcceptable exports a function');
+	t.end();
+});
 
 test('ValidationError', function(t) {
 
@@ -20,3 +34,4 @@ test('ValidationError', function(t) {
 
 	t.end();
 });
+

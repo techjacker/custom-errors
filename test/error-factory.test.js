@@ -5,21 +5,28 @@ var test = require('tap').test,
 
 test('error factory', function(t) {
 
-	var RandomError = errorFactory('Random', 'info');
-	var RandomErrorStatusCode = errorFactory('Random', 'info', 403);
-
-	var msg = 'random message',
-		RandomInstance = new RandomError(msg),
-		RandomStatusInstance = new RandomErrorStatusCode(msg);
+	var	msg = 'random message',
+		RandomError = errorFactory('Random', 'info'),
+		RandomInstance = new RandomError(msg);
 
 	t.ok(RandomError.prototype instanceof AbstractError, 'RandomError inherits from AbstractError');
 	t.equal(RandomInstance.message, msg, 'this.message param is correct');
 	t.equal(RandomInstance.name, 'Random', 'this.name param is correct');
 	t.equal(RandomInstance.logLevel, 'info', 'this.logLevel param is correct');
 	t.equal(RandomInstance.resCode, 400, 'this.resCode param defaults to 400');
+	t.notOk(RandomInstance.doNotKill, 'this.doNotKill defaults to falsey');
 
 	// WITH status code this time
-	t.equal(RandomStatusInstance.resCode, 403, 'this.resCode param is assigned according to fn input args');
+	var ResCodeDoNotKill = errorFactory('Random', 'info', 403, true),
+		instanceResCodeDoNotKill = new ResCodeDoNotKill(msg),
+		instanceResCodeDoNotKillOverride = new ResCodeDoNotKill(msg, 123, false);
+
+	// defaults
+	t.equal(instanceResCodeDoNotKill.resCode, 403, 'this.resCode param is assigned according to fn input args');
+	t.ok(instanceResCodeDoNotKill.doNotKill, 'this.doNotKill set to falsey by factory');
+	// override
+	t.equal(instanceResCodeDoNotKillOverride.resCode, 123, 'this.resCode param is assigned according to fn input args');
+	t.notOk(instanceResCodeDoNotKillOverride.doNotKill, 'this.doNotKill overridden by constructor');
 
 	t.end();
 });
