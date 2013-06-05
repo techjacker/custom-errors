@@ -1,20 +1,31 @@
 {
   "name": "custom-errors",
-  "version": "1.4.0",
+  "version": "1.4.1",
+  "license": "BSD",
   "description": "custom error classes optimised for error logging",
+  "tags": [
+    "error",
+    "errors",
+    "custom-errors"
+  ],
+  "author": {
+    "name": "Andrew Griffiths",
+    "email": "mail@andrewgriffithsonline.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:techjacker/custom-errors.git"
+  },
+  "engines": [
+    "node >= 0.6.0"
+  ],
   "main": "index.js",
   "scripts": {
     "test": "tap ./test"
   },
-  "repository": "git@github.com:techjacker/custom-errors.git",
-  "keywords": [
-    "errors"
-  ],
-  "author": "andrew griffiths",
-  "license": "BSD",
+  "dependencies": {},
   "devDependencies": {
-    "tap": "~0.4.1",
-    "underscore": "~1.4.4"
-  },
-  "dependencies": {}
+    "tap": ">=0.4",
+    "underscore": ">=1.4"
+  }
 }
